@@ -36,12 +36,12 @@ class TestProducts:
 
     def test_product_check_quantity_more_than_available(self, product):
         # TODO напишите проверки на метод check_quantity
-        assert product.check_quantity(1001) == False
+        assert product.check_quantity(1001) is False
 
     def test_product_buy(self, product):
         # TODO напишите проверки на метод buy
         product.buy(1000)
-        assert product.check_quantity(1) == False
+        assert product.check_quantity(1) is False
 
     def test_product_buy_more_than_available(self, product):
         # TODO напишите проверки на метод buy,
@@ -75,7 +75,7 @@ class TestCart:
         cart.add_product(product, 300)
         cart.add_product(apple, 400)
         cart.remove_product(product)
-        assert cart.products.get(product) == None and cart.products.get(apple) == 400
+        assert cart.products.get(product) is None and cart.products.get(apple) == 400
 
     def test_del_when_quantity_is_less_than_in_cart(self, cart, product, apple):
         cart.add_product(product, 300)
@@ -88,7 +88,7 @@ class TestCart:
         cart.add_product(product, 300)
         cart.add_product(apple, 500)
         cart.remove_product(product, 301)
-        assert cart.products.get(product) == None and cart.products.get(apple) == 500
+        assert cart.products.get(product) is None and cart.products.get(apple) == 500
 
     def test_del_all_products_in_cart(self, cart, product, apple):
         cart.add_product(product, 300)
@@ -103,13 +103,14 @@ class TestCart:
         assert cart.get_total_price() == 800.0
 
     def test_buy_products(self, cart, product, apple):
+        cart.clear()
         cart.add_product(product, 200)
         cart.add_product(apple, 100)
         cart.buy()
         assert product.quantity == 800 and apple.quantity == 400
         assert len(cart.products) == 0
 
-    def test_buy_products_when_quantity_is_less_than_in_cart(self, cart, product):
+    def test_buy_purchase_when_the_goods_are_not_enough(self, cart, product):
         cart.add_product(product, 200)
         product.quantity = 100
         with raises(ValueError):
