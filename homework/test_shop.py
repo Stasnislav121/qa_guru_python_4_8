@@ -111,7 +111,12 @@ class TestCart:
         assert len(cart.products) == 0
 
     def test_buy_purchase_when_the_goods_are_not_enough(self, cart, product):
+        cart.clear()
+        cart.add_product(product, 900)
         cart.add_product(product, 200)
-        product.quantity = 100
         with raises(ValueError):
             cart.buy()
+        cart_quantity_total = list(cart.products.values())[0]
+        assert len(cart.products) == 1
+        assert cart_quantity_total == 1100
+        assert product.quantity == 1000
